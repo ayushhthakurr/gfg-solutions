@@ -1,0 +1,24 @@
+class Solution{
+  public:
+    int minJumps(int arr[], int n){
+    if(n<=1) return 0;
+    if(arr[0]==0) return -1;
+    int jumps = 0;
+    int current_end = 0;
+    int farthest = 0;
+
+    for (int i = 0; i < n; ++i) {
+        farthest = max(farthest, i + arr[i]);
+
+        if (i == current_end) {
+            if (i == n - 1) break;
+            current_end = farthest;
+            jumps++;
+            
+            if (current_end >= n - 1) break;
+        }
+    }
+
+    return current_end >= n - 1 ? jumps : -1;
+}
+};
