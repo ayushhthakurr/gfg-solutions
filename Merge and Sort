@@ -1,0 +1,51 @@
+
+class Solution{
+    public:
+    int mergeNsort(int a[], int b[], int n, int m, int answer[])
+    {
+         // Sort both arrays first
+        sort(a, a + n);
+        sort(b, b + m);
+
+        int i = 0, j = 0, k = 0;
+
+        // Merge the two arrays
+        while (i < n && j < m) {
+            if (a[i] < b[j]) {
+                if (k == 0 || answer[k - 1] != a[i]) {
+                    answer[k++] = a[i];
+                }
+                i++;
+            } else if (a[i] > b[j]) {
+                if (k == 0 || answer[k - 1] != b[j]) {
+                    answer[k++] = b[j];
+                }
+                j++;
+            } else {
+                if (k == 0 || answer[k - 1] != a[i]) {
+                    answer[k++] = a[i];
+                }
+                i++;
+                j++;
+            }
+        }
+
+        // Handle remaining elements in array a
+        while (i < n) {
+            if (k == 0 || answer[k - 1] != a[i]) {
+                answer[k++] = a[i];
+            }
+            i++;
+        }
+
+        // Handle remaining elements in array b
+        while (j < m) {
+            if (k == 0 || answer[k - 1] != b[j]) {
+                answer[k++] = b[j];
+            }
+            j++;
+        }
+
+        return k;
+    }
+};
