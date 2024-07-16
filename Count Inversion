@@ -1,0 +1,73 @@
+class Solution {
+  public:
+    // Function to count inversions in the array.
+    long long int inversionCount(long long arr[], int n) {
+        long long int count = 0;
+        mergeSort(arr, 0, n - 1, count);
+        return count;
+    }
+
+  private:
+    void merge(long long arr[], int s, int e, long long &count) {
+        int mid = (s + e) / 2;
+        int len1 = mid - s + 1;
+        int len2 = e - mid;
+
+        long long *first = new long long[len1];
+        long long *second = new long long[len2];
+
+        // Copy values
+        int mainArrayIndex = s;
+        for(int i = 0; i < len1; i++) {
+            first[i] = arr[mainArrayIndex++];
+        }
+
+        mainArrayIndex = mid + 1;
+        for(int i = 0; i < len2; i++) {
+            second[i] = arr[mainArrayIndex++];
+        }
+
+        // Merge two sorted arrays
+        int index1 = 0;
+        int index2 = 0;
+        mainArrayIndex = s;
+
+        while(index1 < len1 && index2 < len2) {
+            if(first[index1] <= second[index2]) {
+                arr[mainArrayIndex++] = first[index1++];
+            } else {
+                arr[mainArrayIndex++] = second[index2++];
+                count += (len1 - index1); // Count inversions
+            }
+        }
+
+        while(index1 < len1) {
+            arr[mainArrayIndex++] = first[index1++];
+        }
+
+        while(index2 < len2) {
+            arr[mainArrayIndex++] = second[index2++];
+        }
+
+        delete[] first;
+        delete[] second;
+    }
+
+    void mergeSort(long long arr[], int s, int e, long long &count) {
+        // Base case
+        if(s >= e) {
+            return;
+        }
+
+        int mid = (s + e) / 2;
+
+        // Sort left part
+        mergeSort(arr, s, mid, count);
+
+        // Sort right part
+        mergeSort(arr, mid + 1, e, count);
+
+        // Merge sorted parts
+        merge(arr, s, e, count);
+    }
+};
