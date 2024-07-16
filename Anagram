@@ -1,0 +1,22 @@
+class Solution {
+public:
+    // Function to check whether two strings are anagram of each other or not.
+    bool isAnagram(std::string a, std::string b) {
+        if (a.length() != b.length()) return false;
+        
+        std::vector<int> freq(26, 0);
+        
+        for (size_t i = 0; i < a.length(); ++i) {
+            freq[a[i] - 'a']++;
+            freq[b[i] - 'a']--;
+        }
+        
+        for (size_t i = 0; i < 26; ++i) {
+            if (freq[i] != 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+};
