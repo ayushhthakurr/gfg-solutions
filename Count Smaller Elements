@@ -1,0 +1,69 @@
+class Solution {
+  public:
+    vector<int> constructLowerArray(vector<int> &arr) {
+        int n = arr.size();
+        vector<int> count(n,0); //Array to store count of smaller elements to right
+        vector<int> indices(n);
+        
+        for(int i=0;i<n;++i){
+            indices[i]=i;
+        }
+        mergesort(arr,indices,count,0,n-1);
+        return count;
+    }
+    
+private:
+   void merge(vector<int> &arr, vector<int> &indices, vector<int>&count,int s,int e){
+       int mid = (s+e)/2;
+       int len1 = mid -s +1;
+       int len2 = e -mid;
+       
+       vector<int>leftindices(len1);
+       vector<int>rightindices(len2);
+       
+        for (int i = 0; i < len1; ++i) {
+            leftindices[i] = indices[s + i];
+        }
+        for (int i = 0; i < len2; ++i) {
+            rightindices[i] = indices[mid + 1 + i];
+        }
+
+//Merging to halves
+        int i = 0, j = 0, k = s;
+        while (i < len1 && j < len2) {
+            if (arr[leftindices[i]] <= arr[rightindices[j]]) {
+                indices[k] = leftindices[i];
+                count[leftindices[i]] += j; 
+                ++i;
+            } else {
+                indices[k] = rightindices[j];
+                ++j;
+            }
+            ++k;
+        }
+
+//Copy Remaining
+            while (i < len1) {
+            indices[k] = leftindices[i];
+            count[leftindices[i]] += j;
+            ++i;
+            ++k;
+        }
+        while (j < len2) {
+            indices[k] = rightindices[j];
+            ++j;
+            ++k;
+        }
+    }
+
+    void mergesort(vector<int> &arr, vector<int> &indices,vector<int> &count, int s, int e) {
+        if (s >= e) {
+            return;
+        }
+
+        int mid = (s + e) / 2;
+        mergesort(arr, indices, count, s, mid);
+        mergesort(arr, indices, count, mid + 1, e);
+        merge(arr, indices, count, s, e);
+   }
+};
