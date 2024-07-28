@@ -1,0 +1,16 @@
+class Solution {
+  public:
+
+    string removeDups(string str) {
+    int n = str.size();
+    unordered_map<char,int> exist;
+    string ans = "";
+    for(int i=0;i<n;i++){
+        if(exist.find(str[i])==exist.end()){
+            ans.push_back(str[i]);
+            exist[str[i]]++;
+        }
+    }
+    return ans;
+    }
+};
